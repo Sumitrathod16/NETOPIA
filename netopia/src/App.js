@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import { EmergencyDashboard } from "./components/EmergencyDashboard";
+import { CustomMessages } from "./components/CustomMessages";
+import { Navigation } from "./components/Navigation";
+import { OfflineMaps } from "./components/OfflineMaps";
+import { Settings } from "./components/Settings";
+import "./App.css";
 
-function App() {
+export default function App() {
+  const [currentSection, setCurrentSection] = useState("dashboard");
+
+  const navigate = (section) => {
+    setCurrentSection(section);
+  };
+
+  const goBack = () => {
+    setCurrentSection("dashboard");
+  };
+
+  const renderSection = () => {
+    switch (currentSection) {
+      case "messages":
+        return <CustomMessages onBack={goBack} />;
+      case "navigation":
+        return <Navigation onBack={goBack} />;
+      case "maps":
+        return <OfflineMaps onBack={goBack} />;
+      case "settings":
+        return <Settings onBack={goBack} />;
+      default:
+        return <EmergencyDashboard onNavigate={navigate} />;
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-container">
+      {renderSection()}
     </div>
   );
 }
-
-export default App;
