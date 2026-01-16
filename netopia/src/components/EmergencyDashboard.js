@@ -1,4 +1,6 @@
 import React from "react";
+import {useState} from "react";
+import {motion} from "framer-motion";
 import { 
   Phone, 
   MessageSquare, 
@@ -10,10 +12,13 @@ import {
   Car,
   Zap
 } from "lucide-react";
+import "./EmergencyDashboard.css";
 
 
 export function EmergencyDashboard({ onNavigate }) {
+  
   const emergencyTypes = [
+    {id:"all", label:"All Emergencies", icon:Phone, color:"emergency-all"},
     { id: "medical", label: "Medical Emergency", icon: Heart, color: "emergency-medical" },
     { id: "fire", label: "Fire Emergency", icon: AlertTriangle, color: "emergency-fire" },
     { id: "police", label: "Police Emergency", icon: Phone, color: "emergency-police" },
@@ -21,270 +26,30 @@ export function EmergencyDashboard({ onNavigate }) {
     { id: "power", label: "Power Outage", icon: Zap, color: "emergency-power" }
   ];
 
+   const Nearby_resources = [
+      { id: "r1", name: "Restaurant", distance: 0.9, angle: 135, color: '#EF4444', icon: "🍽️", type: "food" },
+      { id: "r2", name: "Park", distance: 0.7, angle: 180, color: '#22C55E', icon: "🌳", type: "park" },
+      { id: "r3", name: "Restaurant", distance: 0.6, angle: 225, color: '#F97316', icon: "🍽️", type: "food" },
+      { id: "r4", name: "Service", distance: 0.5, angle: 45, color: '#6366F1', icon: "🛠️", type: "service" },
+      { id: "r5", name: "Service", distance: 0.3, angle: 270, color: '#3B82F6', icon: "🛠️", type: "service" },
+      { id: "r6", name: "Park", distance: 0.5, angle: 0, color: '#22C55E', icon: "🌳", type: "park" },
+      { id: "r7", name: "Hospital", distance: 1.0, angle: 90, color: '#A78BFA', icon: "🏥", type: "hospital" },
+      { id: "r8", name: "Police Station", distance: 0.4, angle: 315, color: '#6B7280', icon: "👮‍♂️", type: "police" },
+    ];
+ const [hoverId, setHoveredId] = useState(null);
+ const getPosition = (distance, angle, centerX, centerY, scale) => {
+  const radians = (angle * Math.PI) / 180;
+  const x = centerX + distance * scale * Math.cos(radians);
+  const y = centerY + distance * scale * Math.sin(radians);
+  return { x, y };
+ };
+ const mapWidth = 520;
+ const mapHeight = 380;
+ const centerX = mapWidth / 2;
+ const centerY = mapHeight / 2;
+ const scale = 80;
+
   return (
-    <>
-    <style>
-        {`
-        .emergency-dashboard {
-  min-height: 100vh;
-  background-color: #ffffff;
-  padding: 1rem;
-}
-
-.dashboard-container {
-  max-width: 28rem;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* Header */
-.dashboard-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.header-info {
-  flex: 1;
-}
-
-.header-title {
-  color: #dc2626;
-  font-size: 1.5rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-}
-
-.header-subtitle {
-  color: #717182;
-  font-size: 1rem;
-}
-
-.status-badge {
-  background-color: #dcfce7;
-  color: #166534;
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.375rem;
-  border: 1px solid #bbf7d0;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-/* Emergency Call Button */
-.emergency-call-card {
-  background-color: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-}
-
-.emergency-call-button {
-  width: 100%;
-  height: 4rem;
-  background-color: #dc2626;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1.125rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.emergency-call-button:hover {
-  background-color: #b91c1c;
-}
-
-.button-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-/* Emergency Types Grid */
-.emergency-types-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-}
-
-.emergency-type-card {
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  cursor: pointer;
-  transition: box-shadow 0.2s;
-}
-
-.emergency-type-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.emergency-type-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 0.5rem;
-}
-
-.emergency-icon {
-  padding: 0.75rem;
-  border-radius: 50%;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.emergency-medical {
-  background-color: #ef4444;
-}
-
-.emergency-fire {
-  background-color: #f97316;
-}
-
-.emergency-police {
-  background-color: #3b82f6;
-}
-
-.emergency-accident {
-  background-color: #eab308;
-}
-
-.emergency-power {
-  background-color: #a855f7;
-}
-
-.emergency-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
-}
-
-/* Main Services */
-.main-services {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.service-card {
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  cursor: pointer;
-  transition: box-shadow 0.2s;
-}
-
-.service-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.service-content {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  position: relative;
-}
-
-.service-icon {
-  width: 2rem;
-  height: 2rem;
-}
-
-.service-icon.blue {
-  color: #2563eb;
-}
-
-.service-icon.green {
-  color: #16a34a;
-}
-
-.service-icon.purple {
-  color: #9333ea;
-}
-
-.service-info {
-  flex: 1;
-}
-
-.service-info h3 {
-  font-size: 1.125rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-  color: #374151;
-}
-
-.service-description {
-  color: #717182;
-  font-size: 1rem;
-  margin: 0;
-}
-
-.download-badge {
-  background-color: #f3f4f6;
-  color: #374151;
-  padding: 0.25rem 0.75rem;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-/* Settings */
-.settings-card {
-  background-color: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  cursor: pointer;
-  transition: box-shadow 0.2s;
-}
-
-.settings-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.settings-content {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.settings-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  color: #6b7280;
-}
-
-/* Responsive Design */
-@media (max-width: 640px) {
-  .emergency-dashboard {
-    padding: 0.75rem;
-  }
-  
-  .dashboard-container {
-    gap: 1rem;
-  }
-  
-  .emergency-types-grid {
-    gap: 0.5rem;
-  }
-  
-  .emergency-type-card {
-    padding: 0.75rem;
-  }
-}
-        `}
-    </style>
     <div className="emergency-dashboard">
       <div className="dashboard-container">
         {/* Header */}
@@ -297,6 +62,106 @@ export function EmergencyDashboard({ onNavigate }) {
             Online
           </div>
         </div>
+        {/*Location & Nearby Resources*/}
+  <div className="map-wrapper">
+    {/*Header*/}
+    <div className="map-header">
+      <h1>Location & Nearby Resources</h1>
+      <button className="settings-btn">
+        <Settings size={20} />
+      </button>
+    </div>
+    {/*Map container*/}
+    <div className="map-card">
+      {/*Top control*/}
+      <div className="map-topbar">
+        <div className="coords">
+          <span>37.7749,-122.4194</span>
+        </div>
+        <div className="gps-status">
+          <span className="gps-dot"></span> GPS Active
+        </div>
+      </div>
+      {/*Map SVG*/}
+      <div className="map-area">
+        <motion.div 
+          className="radar"
+          animate={{rotate:360}}
+          transition={{repeat: Infinity, duration: 12, ease:"linear"}}/>
+          <svg width={mapWidth} height={mapHeight} className="map-svg">
+          {/*Map Grids*/}
+          <line x1={centerX} y1="0" x2={centerX} y2={mapHeight} stroke="#E0E7FF" strokeWidth="1" strokeDasharray="5,5"/>
+          <line x1="0" y1={centerY} x2={mapWidth} y2={centerY} stroke="#E0E7FF" strokeWidth="1" strokeDasharray="5,5"/>
+          
+          {/*Distance Circles*/}
+          {[0.5,1].map((r)=>(
+            <circle
+             key={r}
+             cx={centerX}
+             cy={centerY}
+             r={scale*r}
+             fill="none"
+             stroke="#E0E7FF"
+             strokeWidth="1"
+             strokeDasharray="3,3"/>
+          ))}
+          {/*Markers*/}
+          {Nearby_resources.map((res)=>{
+            const pos= getPosition(res.distance,res.angle, centerX,centerY,scale);
+            const isHovered= hoverId===res.id;
+            return(
+              <g key={res.id}>
+                <line x1={centerX} y1={centerY} x2={pos.x} y2={pos.y} stroke="#E0E7FF" strokeWidth="1" opacity="0.5"/>
+                <motion.circle
+                 cx={pos.x}
+                 cy={pos.y}
+                 r={isHovered ? 26 : 22}
+                 fill={res.color}
+                 opacity={isHovered ? 1 : 0.9}
+                 className="marker"
+                 onMouseEnter={() => setHoveredId(res.id)}
+                 onMouseLeave={() => setHoveredId(null)}
+                 whileHover={{ scale: 1.1 }}
+                 transition={{ type: "spring", stiffness: 200, damping: 10 }} />
+                 <text x={pos.x} y={pos.y - 32} textAnchor="middle" className="marker-text">
+                  {res.distance} km
+                 </text>
+              </g>
+            )
+          })}
+          {/*Center Marker*/}
+        <circle cx={centerX} cy={centerY} r="20" fill="#3B82F6" opacity="0.2"/>
+        <circle cx={centerX} cy={centerY} r="14" fill="#3B82F6" />
+        <text x={centerX} y={centerY+ 5} textAnchor="middle" className="center-pin">
+          </text>      
+          </svg>         
+          </div>
+      {/*Scale*/}
+      <div className="map-scale">
+        <div className="scale-box">
+          <div className="scale-line"></div>500m
+        </div>
+      </div>
+      {/*Legend*/}
+      <div className="legend">
+        <div className="legend-card">
+          <h3>Resources Types</h3>
+          <div className="legend-items">
+            <LegendItem color="#EF4444" label="Food & Dining" />
+            <LegendItem color="#22C55E" label="Parks & Recreation" />
+            <LegendItem color="#3B82F6" label="Services & Utilities" />
+
+            </div>
+        </div>
+        <div className="legend-card">
+          <h3>Current Location</h3>
+          <p><strong>Latitude:</strong>37.7749</p>
+          <p><strong>Longitude:</strong>-122.4194</p>
+          <p><strong>Status:</strong> <span className="status-active">Active</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
 
         {/* Emergency Call Button */}
         <div className="emergency-call-card">
@@ -383,6 +248,14 @@ export function EmergencyDashboard({ onNavigate }) {
         </div>
       </div>
     </div>
-    </>
+  );
+}
+
+function LegendItem({ color, label }) {
+  return (
+    <div className="legend-item">
+      <div className="legend-dot" style={{ backgroundColor: color }}></div>
+      <span>{label}</span>
+    </div>
   );
 }

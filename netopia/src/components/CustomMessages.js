@@ -80,22 +80,26 @@ export function CustomMessages({ onBack }) {
         .custom-messages {
   min-height: 100vh;
   background-color: #ffffff;
-  padding: 1rem;
+  padding: 0.5rem;
+  width: 100%;
 }
 
 .messages-container {
+  width: 100%;
   max-width: 28rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+  padding: 0 0.25rem;
 }
 
 /* Header */
 .messages-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .back-button {
@@ -109,6 +113,7 @@ export function CustomMessages({ onBack }) {
   justify-content: center;
   color: #6b7280;
   transition: background-color 0.2s;
+  flex-shrink: 0;
 }
 
 .back-button:hover {
@@ -116,15 +121,16 @@ export function CustomMessages({ onBack }) {
 }
 
 .header-info h1 {
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 500;
   color: #374151;
   margin-bottom: 0.25rem;
+  margin: 0;
 }
 
 .header-subtitle {
   color: #717182;
-  font-size: 1rem;
+  font-size: 0.85rem;
   margin: 0;
 }
 
@@ -133,14 +139,15 @@ export function CustomMessages({ onBack }) {
   background-color: white;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .contacts-title {
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 500;
   margin-bottom: 0.75rem;
   color: #374151;
+  margin: 0;
 }
 
 .contacts-list {
@@ -158,6 +165,8 @@ export function CustomMessages({ onBack }) {
   border: 1px solid #e5e7eb;
   cursor: pointer;
   transition: all 0.2s;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .contact-item:hover {
@@ -173,27 +182,34 @@ export function CustomMessages({ onBack }) {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  flex: 1;
+  min-width: 150px;
 }
 
 .contact-icon {
   width: 1rem;
   height: 1rem;
   color: #6b7280;
+  flex-shrink: 0;
 }
 
 .contact-details {
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .contact-name {
   font-weight: 500;
   color: #374151;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 .contact-phone {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #717182;
+  margin: 0;
 }
 
 .selected-badge {
@@ -201,8 +217,9 @@ export function CustomMessages({ onBack }) {
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 0.375rem;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 /* Quick Messages */
@@ -213,16 +230,17 @@ export function CustomMessages({ onBack }) {
 }
 
 .quick-messages h3 {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: #374151;
+  margin: 0;
 }
 
 .message-card {
   background-color: white;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .message-header {
@@ -238,6 +256,9 @@ export function CustomMessages({ onBack }) {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
 }
 
 .message-icon.medical {
@@ -262,17 +283,19 @@ export function CustomMessages({ onBack }) {
 
 .message-content {
   flex: 1;
+  min-width: 0;
 }
 
 .message-title {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: #374151;
   margin-bottom: 0.25rem;
+  margin: 0;
 }
 
 .message-text {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #717182;
   margin: 0;
   line-height: 1.4;
@@ -284,8 +307,8 @@ export function CustomMessages({ onBack }) {
   color: white;
   border: none;
   border-radius: 0.375rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -313,14 +336,15 @@ export function CustomMessages({ onBack }) {
   background-color: white;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .custom-title {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: #374151;
   margin-bottom: 0.75rem;
+  margin: 0;
 }
 
 .custom-textarea {
@@ -328,13 +352,14 @@ export function CustomMessages({ onBack }) {
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
   padding: 0.75rem;
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1.5;
   color: #374151;
   background-color: white;
   resize: vertical;
   margin-bottom: 0.75rem;
-  min-height: 6rem;
+  min-height: 5.5rem;
+  font-family: inherit;
 }
 
 .custom-textarea:focus {
@@ -352,24 +377,28 @@ export function CustomMessages({ onBack }) {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .meta-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #717182;
 }
 
-/* Responsive Design */
-@media (max-width: 640px) {
+/* Mobile: < 640px */
+@media (max-width: 639px) {
   .custom-messages {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
   
   .messages-container {
-    gap: 1rem;
+    max-width: 100%;
+    gap: 0.75rem;
+    padding: 0;
   }
   
   .message-header {
@@ -379,7 +408,96 @@ export function CustomMessages({ onBack }) {
   .message-meta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.5rem;
+  }
+
+  .custom-textarea {
+    min-height: 5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet: 640px - 1024px */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .custom-messages {
+    padding: 1rem;
+  }
+
+  .messages-container {
+    max-width: 90%;
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .header-info h1 {
+    font-size: 1.35rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .message-title {
+    font-size: 1rem;
+  }
+
+  .message-text {
+    font-size: 0.85rem;
+  }
+
+  .custom-textarea {
+    min-height: 6rem;
+    font-size: 1rem;
+  }
+
+  .send-button {
+    font-size: 0.95rem;
+  }
+}
+
+/* Desktop: > 1024px */
+@media (min-width: 1025px) {
+  .custom-messages {
+    padding: 1.5rem;
+  }
+
+  .messages-container {
+    max-width: 1000px;
+    gap: 1.5rem;
+    padding: 0;
+  }
+
+  .header-info h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-subtitle {
+    font-size: 1rem;
+  }
+
+  .quick-messages h3 {
+    font-size: 1.25rem;
+  }
+
+  .message-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .message-title {
+    font-size: 1.05rem;
+  }
+
+  .message-text {
+    font-size: 0.9rem;
+  }
+
+  .custom-textarea {
+    min-height: 7rem;
+    font-size: 1rem;
+  }
+
+  .send-button {
+    font-size: 1rem;
   }
 }
         `}
