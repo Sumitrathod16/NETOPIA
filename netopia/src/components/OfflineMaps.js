@@ -98,22 +98,26 @@ export function OfflineMaps({ onBack }) {
     .offline-maps {
   min-height: 100vh;
   background-color: #ffffff;
-  padding: 1rem;
+  padding: 0.5rem;
+  width: 100%;
 }
 
 .maps-container {
+  width: 100%;
   max-width: 28rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+  padding: 0 0.25rem;
 }
 
 /* Header */
 .maps-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .back-button {
@@ -127,6 +131,7 @@ export function OfflineMaps({ onBack }) {
   justify-content: center;
   color: #6b7280;
   transition: background-color 0.2s;
+  flex-shrink: 0;
 }
 
 .back-button:hover {
@@ -134,15 +139,16 @@ export function OfflineMaps({ onBack }) {
 }
 
 .header-info h1 {
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 500;
   color: #374151;
   margin-bottom: 0.25rem;
+  margin: 0;
 }
 
 .header-subtitle {
   color: #717182;
-  font-size: 1rem;
+  font-size: 0.85rem;
   margin: 0;
 }
 
@@ -151,7 +157,7 @@ export function OfflineMaps({ onBack }) {
   background-color: white;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .storage-header {
@@ -159,6 +165,8 @@ export function OfflineMaps({ onBack }) {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .storage-info {
@@ -168,9 +176,10 @@ export function OfflineMaps({ onBack }) {
 }
 
 .storage-icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   color: #6b7280;
+  flex-shrink: 0;
 }
 
 .storage-badge {
@@ -179,8 +188,9 @@ export function OfflineMaps({ onBack }) {
   border: 1px solid #d1d5db;
   padding: 0.25rem 0.75rem;
   border-radius: 0.375rem;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .progress-bar {
@@ -199,7 +209,7 @@ export function OfflineMaps({ onBack }) {
 }
 
 .storage-text {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #717182;
 }
 
@@ -208,35 +218,39 @@ export function OfflineMaps({ onBack }) {
   background-color: #eff6ff;
   border: 1px solid #bfdbfe;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .location-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.75rem;
   margin-bottom: 0.75rem;
 }
 
 .location-icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.15rem;
+  height: 1.15rem;
   color: #2563eb;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }
 
 .location-info {
   flex: 1;
+  min-width: 0;
 }
 
 .location-title {
   color: #1e40af;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   margin-bottom: 0.25rem;
+  margin: 0;
 }
 
 .location-subtitle {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #2563eb;
   margin: 0;
 }
@@ -247,8 +261,8 @@ export function OfflineMaps({ onBack }) {
   color: white;
   border: none;
   border-radius: 0.375rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -273,12 +287,15 @@ export function OfflineMaps({ onBack }) {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .maps-section-header h3 {
-  font-size: 1.125rem;
+  font-size: 1.05rem;
   font-weight: 500;
   color: #374151;
+  margin: 0;
 }
 
 .downloaded-badge {
@@ -286,15 +303,16 @@ export function OfflineMaps({ onBack }) {
   color: #374151;
   padding: 0.25rem 0.75rem;
   border-radius: 0.375rem;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .map-card {
   background-color: white;
   border: 1px solid #e5e7eb;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .map-content {
@@ -311,10 +329,14 @@ export function OfflineMaps({ onBack }) {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
 }
 
 .map-details {
   flex: 1;
+  min-width: 0;
 }
 
 .map-header {
@@ -322,21 +344,25 @@ export function OfflineMaps({ onBack }) {
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .map-main-info {
   flex: 1;
+  min-width: 150px;
 }
 
 .map-name {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: #374151;
   margin-bottom: 0.25rem;
+  margin: 0;
 }
 
 .map-coverage {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #717182;
   margin: 0;
 }
@@ -344,9 +370,10 @@ export function OfflineMaps({ onBack }) {
 .priority-badge {
   padding: 0.25rem 0.75rem;
   border-radius: 0.375rem;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 500;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .priority-high {
@@ -368,15 +395,17 @@ export function OfflineMaps({ onBack }) {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   color: #717182;
   margin-bottom: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .check-icon {
-  width: 0.75rem;
-  height: 0.75rem;
+  width: 0.7rem;
+  height: 0.7rem;
   color: #16a34a;
+  flex-shrink: 0;
 }
 
 .downloaded-text {
@@ -390,28 +419,30 @@ export function OfflineMaps({ onBack }) {
 .progress-header {
   display: flex;
   justify-content: space-between;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   margin-bottom: 0.25rem;
 }
 
 .map-actions {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .view-map-button {
   flex: 1;
+  min-width: 100px;
   background-color: transparent;
   color: #374151;
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.9rem;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -425,12 +456,13 @@ export function OfflineMaps({ onBack }) {
   color: white;
   border: none;
   border-radius: 0.375rem;
-  padding: 0.75rem;
+  padding: 0.65rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.2s;
+  flex-shrink: 0;
 }
 
 .delete-button:hover {
@@ -439,17 +471,18 @@ export function OfflineMaps({ onBack }) {
 
 .download-button {
   flex: 1;
+  min-width: 100px;
   background-color: #3b82f6;
   color: white;
   border: none;
   border-radius: 0.375rem;
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.9rem;
   font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -472,7 +505,7 @@ export function OfflineMaps({ onBack }) {
   background-color: #fffbeb;
   border: 1px solid #fde68a;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .offline-info-content {
@@ -482,10 +515,11 @@ export function OfflineMaps({ onBack }) {
 }
 
 .info-icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.15rem;
+  height: 1.15rem;
   color: #d97706;
   margin-top: 0.125rem;
+  flex-shrink: 0;
 }
 
 .info-text {
@@ -494,36 +528,39 @@ export function OfflineMaps({ onBack }) {
 
 .info-title {
   color: #d97706;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
+  margin: 0;
 }
 
 .info-list {
   color: #d97706;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   margin: 0;
-  padding-left: 0;
-  list-style: none;
+  padding-left: 1rem;
+  list-style: disc;
 }
 
 .info-list li {
   margin-bottom: 0.25rem;
 }
 
-/* Responsive Design */
-@media (max-width: 640px) {
+/* Mobile: < 640px */
+@media (max-width: 639px) {
   .offline-maps {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
   
   .maps-container {
-    gap: 1rem;
+    max-width: 100%;
+    gap: 0.75rem;
+    padding: 0;
   }
   
   .map-header {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.25rem;
   }
   
   .map-actions {
@@ -532,6 +569,109 @@ export function OfflineMaps({ onBack }) {
   
   .offline-info-content {
     gap: 0.5rem;
+  }
+}
+
+/* Tablet: 640px - 1024px */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .offline-maps {
+    padding: 1rem;
+  }
+
+  .maps-container {
+    max-width: 90%;
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .header-info h1 {
+    font-size: 1.35rem;
+  }
+
+  .header-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .map-name {
+    font-size: 1rem;
+  }
+
+  .map-coverage {
+    font-size: 0.85rem;
+  }
+
+  .maps-section-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .map-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .view-map-button,
+  .download-button {
+    font-size: 0.95rem;
+  }
+
+  .download-current-button {
+    font-size: 0.95rem;
+  }
+}
+
+/* Desktop: > 1024px */
+@media (min-width: 1025px) {
+  .offline-maps {
+    padding: 1.5rem;
+  }
+
+  .maps-container {
+    max-width: 1000px;
+    gap: 1.5rem;
+    padding: 0;
+  }
+
+  .header-info h1 {
+    font-size: 1.5rem;
+  }
+
+  .header-subtitle {
+    font-size: 1rem;
+  }
+
+  .maps-section-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .map-name {
+    font-size: 1.05rem;
+  }
+
+  .map-coverage {
+    font-size: 0.9rem;
+  }
+
+  .map-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .view-map-button,
+  .download-button {
+    min-width: 140px;
+    font-size: 1rem;
+  }
+
+  .download-current-button {
+    font-size: 1rem;
+  }
+
+  .info-title {
+    font-size: 1rem;
+  }
+
+  .info-list {
+    font-size: 0.9rem;
   }
 }
     `}

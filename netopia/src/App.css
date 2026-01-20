@@ -5,8 +5,12 @@
   box-sizing: border-box;
 }
 
+html, body, #root {
+  width: 100%;
+  height: 100%;
+}
+
 body {
-  
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -20,34 +24,34 @@ body {
 
 .app-container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow: auto;
 }
 
-/* Typography */
+/* Mobile First Typography */
 h1 {
-  font-size: 1.5rem;
-  font-weight: 500;
-  line-height: 1.5;
-  margin-bottom: 0.25rem;
-}
-
-h2 {
   font-size: 1.25rem;
   font-weight: 500;
   line-height: 1.5;
   margin-bottom: 0.25rem;
 }
 
-h3 {
+h2 {
   font-size: 1.125rem;
   font-weight: 500;
   line-height: 1.5;
   margin-bottom: 0.25rem;
 }
 
-h4 {
+h3 {
   font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 0.25rem;
+}
+
+h4 {
+  font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.5;
   margin-bottom: 0.25rem;
@@ -149,6 +153,64 @@ p {
 
 .border-blue-200 {
   border-color: #bfdbfe;
+}
+
+/* Responsive Breakpoints */
+/* Mobile: < 640px (default) */
+@media (max-width: 639px) {
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  h2 {
+    font-size: 1.125rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+
+  p {
+    font-size: 0.9375rem;
+  }
+}
+
+/* Tablet: 640px - 1024px */
+@media (min-width: 640px) and (max-width: 1024px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.125rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+/* Desktop: > 1024px */
+@media (min-width: 1025px) {
+  h1 {
+    font-size: 1.875rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
 }
 
 .border-amber-200 {
