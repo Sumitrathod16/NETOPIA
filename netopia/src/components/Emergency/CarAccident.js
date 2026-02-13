@@ -123,10 +123,10 @@ import { ArrowLeft } from "lucide-react";
         
                 <div className="full-width-page">
                     <div className="caracci-emergency-container">
-                        <div className="emergency-caracci">
-                             <button className="caracci-back-button" onClick={onBack} aria-label="Back">
-                        <ArrowLeft size={16} />
-                    </button>
+                            <div className="emergency-caracci">
+                                <button className="back-button" onClick={onBack} aria-label="Back to dashboard">
+                            <ArrowLeft size={16} />
+                        </button>
                             <h2>Car Accident Emergency</h2>
                             <p>In case of a car accident emergency, call your nearby police station immediately.</p>
                         </div>

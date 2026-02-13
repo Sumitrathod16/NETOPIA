@@ -121,10 +121,10 @@ export const PoliceEmer = ({ onBack }) => {
 
       <div className="full-width-page">
             <div className="police-emergency-container">
-                <div className="emergency-police">
-                     <button className="police-back-button" onClick={onBack} aria-label="Back">
-                <ArrowLeft size={16} />
-            </button>
+                 <div className="emergency-police">
+                     <button className="back-button" onClick={onBack} aria-label="Back to dashboard">
+                 <ArrowLeft size={16} />
+              </button>
                     <h2>Police Emergency</h2>
                     <p>In case of a police emergency, call your nearby police station immediately.</p>
                 </div>

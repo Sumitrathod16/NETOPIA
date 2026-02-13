@@ -46,6 +46,7 @@ function LiveLocationUpdater({ position, isTracking }) {
 
 export function EmergencyDashboard({ onNavigate }) {
   const [selectedEmergency, setSelectedEmergency] = useState(null);
+  const [user, setUser] = useState({ name: "John Doe", avatar: null });
 
   /* ---------------- Emergency Types With Colors ---------------- */
   const emergencyTypes = [
@@ -98,8 +99,42 @@ export function EmergencyDashboard({ onNavigate }) {
     return () => navigator.geolocation.clearWatch(watchId);
   }, [isSOSActive]);
 
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("user"));
+      if (stored && stored.name) setUser(stored);
+    } catch (e) {
+      // ignore
+    }
+  }, []);
+
+  const handleLogout = () => {
+    // clear user session (demo)
+    localStorage.removeItem("user");
+    if (onNavigate) onNavigate("landing");
+  };
+
+  const getInitials = (name) => {
+    if (!name) return "U";
+    return name.split(" ").map((n) => n[0]).slice(0,2).join("").toUpperCase();
+  };
+
   const toggleSOS = () => {
     setIsSOSActive((prev) => !prev);
+  };
+
+  const emergencyNumber = "102";
+
+  const makeCall = (number) => {
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = `tel:${number}`;
+    } else {
+      try {
+        navigator.clipboard && navigator.clipboard.writeText(number);
+      } catch (e) {}
+      alert(`Emergency number ${number} copied to clipboard`);
+    }
   };
 
   const shareLocationLink = () => {
@@ -154,9 +189,24 @@ export function EmergencyDashboard({ onNavigate }) {
   return (
     <div className="emergency-dashboard">
 
-      <div className="dashboard-header">
-        <h1>Emergency Services</h1>
-        <div className="status-badge">Online</div>
+      <div className="dashboard-header user-header">
+        <div className="header-left">
+          <h1>Emergency Services</h1>
+          <div className="status-badge">Online</div>
+        </div>
+
+        <div className="user-info">
+          {user && user.avatar ? (
+            <img src={user.avatar} alt="profile" className="profile-pic" />
+          ) : (
+            <div className="profile-placeholder">{getInitials(user && user.name)}</div>
+          )}
+
+          <div className="user-meta">
+            <div className="username">{user && user.name}</div>
+            <button className="logout-btn" onClick={handleLogout}>Log out</button>
+          </div>
+        </div>
       </div>
 
       {/* MAP */}
@@ -204,6 +254,15 @@ export function EmergencyDashboard({ onNavigate }) {
         >
           <Phone />
           {isSOSActive ? "Stop SOS" : "Activate SOS"}
+        </button>
+
+        <button
+          className="direct-call-button"
+          onClick={() => makeCall(emergencyNumber)}
+          aria-label={`Call ${emergencyNumber}`}
+        >
+          <Phone />
+          Call {emergencyNumber}
         </button>
 
         {isSOSActive && (

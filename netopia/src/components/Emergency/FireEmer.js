@@ -124,7 +124,7 @@ export const FireEmer = ({ onBack }) => {
         <div className="full-width-page">
             <div className="fire-emergency-container">
                 <div className="emergency-fire">
-                    <button className="fire-back-button" onClick={onBack} aria-label="Back">
+                    <button className="back-button" onClick={onBack} aria-label="Back to dashboard">
                 <ArrowLeft size={16} />
             </button>
                     <h2>Fire Emergency</h2>

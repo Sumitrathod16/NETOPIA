@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { EmergencyPage } from "./EmergencyPage";
 import "./OtherEmer.css";
 
@@ -19,9 +20,9 @@ export const OtherEmer = ({ onBack }) => {
     <div className="other-emergency-wrapper">
 <div className="page-title">
       <h2>
-        <button className="back-btn" onClick={onBack}>
-        ← 
-      </button>
+        <button className="back-button" onClick={onBack} aria-label="Back to dashboard">
+          <ArrowLeft size={16} />
+        </button>
       Other Emergencies</h2>
 </div>
       <div className="tiers">

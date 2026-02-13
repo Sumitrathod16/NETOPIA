@@ -1,0 +1,35 @@
+.floating-call-button {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.25);
+  z-index: 9999;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.floating-call-button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(220, 38, 38, 0.35);
+}
+
+.floating-call-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .floating-call-button {
+    right: 16px;
+    bottom: 16px;
+    width: 64px;
+    height: 64px;
+  }
+}

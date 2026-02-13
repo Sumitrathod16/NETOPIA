@@ -222,27 +222,29 @@
   color: #1f2937;
 }
 
-.back-btn {
-  font-size: 1rem;
-  padding: 0.5rem;
-  border: none;
-  background: white;
+/* Small back button used inside the page title */
+.page-title .back-button {
+  width: 36px;
+  height: 36px;
+  padding: 0.35rem;
   border: 1px solid #e5e7eb;
-  border-radius: 0.625rem;
-  cursor: pointer;
-  display: flex;
+  background: white;
+  border-radius: 0.5rem;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #6b7280;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
 }
 
-.back-btn:hover {
+.page-title .back-button:hover {
   background-color: #f9fafb;
   border-color: #d1d5db;
   color: #374151;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
+
+/* keep legacy .back-btn for backwards compatibility but hide to avoid visual conflict */
+.back-btn { display: none; }

@@ -122,7 +122,7 @@ export const PowerOut = ({ onBack }) => {
        <div className="full-width-page">
             <div className="powerout-emergency-container">
                 <div className="emergency-powerout">
-                    <button className="powerout-back-button" onClick={onBack} aria-label="Back">
+                    <button className="back-button" onClick={onBack} aria-label="Back to dashboard">
                 <ArrowLeft size={16} />
             </button>
                     <h2>Power Outage Emergency</h2>
