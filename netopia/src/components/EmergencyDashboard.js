@@ -7,7 +7,6 @@ import {
   Zap,
   MoreVertical
 } from "lucide-react";
-
 import {
   MapContainer,
   TileLayer,
@@ -27,6 +26,7 @@ import { FireEmer } from "./Emergency/FireEmer";
 import { CarAccident } from "./Emergency/CarAccident";
 import { PowerOut } from "./Emergency/Powerout";
 import { OtherEmer } from "./Emergency/OtherEmer";
+import { ReportIssue } from "./Emergency/ReportIssue";
 
 /* ---------------- Auto Follow Component ---------------- */
 function LiveLocationUpdater({ position, isTracking }) {
@@ -58,8 +58,7 @@ export function EmergencyDashboard({ onNavigate }) {
     { id: "other", label: "Other Emergencies", icon: MoreVertical, color: "emergency-all" }
   ];
 
-  /* ---------------- Location + SOS ---------------- */
-
+  /* ---------------- Location + SOS ----------------  */
   const fallbackLocation = [19.0760, 72.8777];
   const [userLocation, setUserLocation] = useState(fallbackLocation);
   const [accuracy, setAccuracy] = useState(null);
@@ -183,6 +182,8 @@ export function EmergencyDashboard({ onNavigate }) {
     return <PowerOut onBack={() => setSelectedEmergency(null)} />;
   if (selectedEmergency === "other")
     return <OtherEmer onBack={() => setSelectedEmergency(null)} />;
+  if (selectedEmergency === "report")
+    return <ReportIssue onBack={() => setSelectedEmergency(null)} />;
 
   /* ---------------- UI ---------------- */
 
@@ -316,7 +317,25 @@ export function EmergencyDashboard({ onNavigate }) {
           );
         })}
       </div>
+<div className="report-issue-section">
+        <h3>Report an Issue</h3>
+        <p>Report any issues or problems you encounter in the emergency dashboard.</p>
+        <button className="report-issue-button" onClick={() => setSelectedEmergency("report")}>Report Issue</button>
+        </div>
 
-    </div>
+        <style jsx>{`
+            .full-width-page { max-width:1000px; margin:0 auto; padding:2rem 1rem; }
+            .police-emergency-container { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:2rem; }
+            .emergency-police, .emr-types, .immediate-actions, .emr-call, .emr-tools{ margin-bottom:2rem; }
+            .emergency-police h2 { font-size:1.5rem; margin-bottom:0.75rem; }
+            .emergency-police p { font-size:1rem; color:#555; line-height:1.6; }  
+            .emr-types h3, .immediate-actions h3, .emr-call h3, .emr-tools h3 { font-size:1.25rem; margin-bottom:0.75rem; }
+            .report-issue-section { margin-top:2rem; padding:1rem; background:#f9f9f9; border-radius:8px; }
+            .report-issue-section h3 { margin-bottom:0.5rem; }
+            .report-issue-section p { margin-bottom:1rem; color:#555; }
+            .report-issue-button { background-color:#dc3545; color:#fff; border:none; padding:0.75rem 1.25rem; border-radius:6px; cursor:pointer; }
+            .report-issue-button:hover { background-color:#a71d2a; }
+`}</style>
+</div>
   );
 }

@@ -96,6 +96,9 @@ export function Navigation({ onBack }) {
   background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
   padding: 1rem 0.5rem;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navigation-container {
