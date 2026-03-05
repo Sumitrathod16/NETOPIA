@@ -16,6 +16,7 @@ import {
   Polyline,
   useMap
 } from "react-leaflet";
+import L from "leaflet"; // for creating custom div icons
 
 import "leaflet/dist/leaflet.css";
 import "./EmergencyDashboard.css";
@@ -64,6 +65,127 @@ export function EmergencyDashboard({ onNavigate }) {
   const [accuracy, setAccuracy] = useState(null);
   const [isSOSActive, setIsSOSActive] = useState(false);
   const [routePath, setRoutePath] = useState([]);
+
+  // request current position once on mount so resources reflect live location
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setUserLocation([lat, lng]);
+        setAccuracy(position.coords.accuracy);
+      },
+      (err) => {
+        console.warn("Geolocation getCurrentPosition failed", err);
+      },
+      { enableHighAccuracy: true, timeout: 5000 }
+    );
+  }, []);
+
+  // resources to show on map (e.g. hospitals, police stations, fire stations)
+  const [resources, setResources] = useState([]);
+
+  // full list (would normally come from backend once)
+  const allResources = React.useMemo(() => [
+    // avoid exact overlap with fallback/user location
+    { id: "h1", type: "hospital", name: "City Hospital", coords: [19.0755, 72.8772], phone: "+91-22-1234-5678" },
+    { id: "p1", type: "police",  name: "Central Police Station", coords: [19.0780, 72.8780], phone: "+91-22-8765-4321" },
+    { id: "f1", type: "fire",    name: "Downtown Fire Station", coords: [19.0740, 72.8760], phone: "+91-22-5555-0000" },
+    { id: "h2", type: "hospital", name: "Northside Clinic", coords: [19.0800, 72.8800], phone: "+91-22-9999-1111" }
+  ], []);
+
+  // helper – great circle distance in km
+  const distanceKm = (lat1, lon1, lat2, lon2) => {
+    const toRad = (v) => (v * Math.PI) / 180;
+    const R = 6371; // earth radius km
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  };
+
+  // update nearby resources whenever userLocation changes — query Overpass OSM for live nearby POIs
+  useEffect(() => {
+    if (!userLocation) return;
+    const [lat, lng] = userLocation;
+    
+
+    const controller = new AbortController();
+
+    // Overpass QL: search for hospitals/clinics, police, and fire stations within 5km
+    const radius = 5000;
+    const overpassQuery = `
+      [out:json][timeout:15];
+      (
+        node["amenity"="hospital"](around:${radius},${lat},${lng});
+        node["amenity"="clinic"](around:${radius},${lat},${lng});
+        node["amenity"="police"](around:${radius},${lat},${lng});
+        node["emergency"="fire_station"](around:${radius},${lat},${lng});
+        node["amenity"="fire_station"](around:${radius},${lat},${lng});
+      );
+      out center;
+    `;
+
+    fetch("https://overpass-api.de/api/interpreter", {
+      method: "POST",
+      body: overpassQuery,
+      signal: controller.signal,
+      headers: { "Content-Type": "text/plain" }
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data || !data.elements) throw new Error("No data from Overpass");
+
+        const mapped = data.elements.map((el) => {
+          const tags = el.tags || {};
+          let type = "hospital";
+          if (tags.amenity === "police") type = "police";
+          if (tags.emergency === "fire_station" || tags.amenity === "fire_station") type = "fire";
+          if (tags.amenity === "clinic") type = "hospital";
+
+          const latPt = el.lat || (el.center && el.center.lat);
+          const lonPt = el.lon || (el.center && el.center.lon);
+
+          const phone = tags.phone || tags["contact:phone"] || tags.telephone || null;
+
+          return {
+            id: `osm-${el.type}-${el.id}`,
+            type,
+            name: tags.name || tags.official_name || `${type} (unknown)`,
+            phone,
+            coords: [latPt, lonPt]
+          };
+        }).filter(r => r.coords[0] && r.coords[1]);
+
+        // if nothing found, fall back to static list filtered by distance
+        if (mapped.length === 0) {
+          const nearby = allResources.filter(r => {
+            const d = distanceKm(lat, lng, r.coords[0], r.coords[1]);
+            return d <= 5;
+          });
+          setResources(nearby);
+        } else {
+          setResources(mapped);
+        }
+      })
+      .catch((err) => {
+        console.warn("Overpass fetch failed, falling back to static resources", err);
+        const [lat2, lng2] = userLocation;
+        const nearby = allResources.filter(r => {
+          const d = distanceKm(lat2, lng2, r.coords[0], r.coords[1]);
+          return d <= 5;
+        });
+        setResources(nearby);
+      })
+      .finally(() => {});
+
+    return () => controller.abort();
+  }, [userLocation, allResources]);
 
   useEffect(() => {
     if (!isSOSActive) return;
@@ -242,8 +364,73 @@ export function EmergencyDashboard({ onNavigate }) {
           {routePath.length > 1 && (
             <Polyline positions={routePath} color="red" />
           )}
+
+          {/* resource markers */}
+          {resources.map((res) => {
+            // debugging
+            console.log("rendering resource", res);
+            const cls = `resource-marker resource-${res.type}`;
+            return (
+              <Marker
+                key={res.id}
+                position={res.coords}
+                icon={L.divIcon({
+                  className: cls,
+                  html: `<div>${res.name.charAt(0)}</div>`,
+                  iconSize: [38, 38],
+                  iconAnchor: [19, 19]
+                })}
+              >
+                <Popup>
+                  <div style={{ minWidth: 160 }}>
+                    <strong>{res.name}</strong>
+                    <br />
+                    {res.type.charAt(0).toUpperCase() + res.type.slice(1)}
+                    {res.phone && (
+                      <div style={{ marginTop: 6 }}>
+                        <button
+                          onClick={() => makeCall(res.phone)}
+                          style={{ padding: '6px 8px', borderRadius: 6, cursor: 'pointer' }}
+                        >
+                          Call {res.phone}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </Popup>
+              </Marker>
+            );
+          })}
         </MapContainer>
       </div>
+
+      {/* resource list (for debugging/visibility) */}
+      {resources.length > 0 && (
+        <div className="resources-list">
+          <h3>Nearby Resources</h3>
+          <ul>
+            {resources.map((r) => (
+              <li key={r.id} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1 }}>
+                  <strong>{r.name}</strong>
+                  <div style={{ fontSize: 12, color: '#666' }}>{r.type}</div>
+                  {r.phone && <div style={{ fontSize: 13, marginTop: 4 }}>{r.phone}</div>}
+                </div>
+
+                {r.phone ? (
+                  <button onClick={() => makeCall(r.phone)} className="resource-call-button">
+                    Call
+                  </button>
+                ) : (
+                  <button onClick={() => shareLocationLink()} className="resource-call-button">
+                    Share Location
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* SOS */}
       <div className="emergency-call-card">

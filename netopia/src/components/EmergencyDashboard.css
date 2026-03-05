@@ -392,7 +392,16 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   transition: all 0.3s ease;
+  font-weight: bold;
+  font-size: 1rem;
 }
+
+/* type-specific colors */
+.resource-hospital { background: #dc2626; }
+.resource-police { background: #2563eb; }
+.resource-fire { background: #facc15; color: #000; }
+.resource-power { background: #f97316; }
+.resource-other { background: #6b7280; }
 
 .resource-marker:hover {
   transform: scale(1.15);
@@ -466,6 +475,31 @@
     width: 100%;
     max-width: none;
   }
+}
+
+/* resource list */
+.resources-list {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin: 1rem 0;
+}
+
+.resources-list h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.resources-list ul {
+  list-style: disc inside;
+  margin: 0;
+  padding: 0;
+}
+
+.resources-list li {
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
 }
 
 /* Map Header */
