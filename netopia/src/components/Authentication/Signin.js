@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import "./Authentication.css";
 
-export default function Signin({ onBack, onNavigate }) {
+export default function Signin({ onBack, onNavigate, onLogin }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -11,14 +11,21 @@ export default function Signin({ onBack, onNavigate }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!name || !email || !password) {
+      alert("Please fill in all required fields");
+      return;
+    }
     if (password !== confirm) {
       alert("Passwords do not match");
       return;
     }
     const newUser = { name, phone, email, avatar: null };
-    try { localStorage.setItem("user", JSON.stringify(newUser)); } catch (e) {}
-    alert("Account created (demo). You are now signed in.");
-    onNavigate && onNavigate("dashboard");
+    if (onLogin) {
+      onLogin(newUser);
+    } else {
+      try { localStorage.setItem("user", JSON.stringify(newUser)); } catch (e) {}
+      onNavigate && onNavigate("dashboard");
+    }
   };
 
   return (

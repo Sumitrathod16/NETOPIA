@@ -15,6 +15,26 @@ import CallButton from "./components/CallButton";
 
 export default function App() {
   const [currentSection, setCurrentSection] = useState("landing");
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem("user");
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem("user", JSON.stringify(userData));
+    setCurrentSection("dashboard");
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("user");
+    setCurrentSection("landing");
+  };
 
   const navigate = (section) => {
     setCurrentSection(section);
@@ -27,11 +47,11 @@ export default function App() {
   const renderSection = () => {
     switch (currentSection) {
       case "landing":
-        return <Landing onNavigate={navigate} />;
+        return <Landing onNavigate={navigate} user={user} onLogout={handleLogout} />;
       case "signin":
-        return <Signin onBack={goBack} onNavigate={navigate} />;
+        return <Signin onBack={goBack} onNavigate={navigate} onLogin={handleLogin} />;
       case "login":
-        return <Login onBack={goBack} onNavigate={navigate} />;
+        return <Login onBack={goBack} onNavigate={navigate} onLogin={handleLogin} />;
       case "messages":
         return <CustomMessages onBack={goBack} />;
       case "navigation":

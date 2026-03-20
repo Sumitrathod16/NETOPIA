@@ -2,17 +2,24 @@ import React, { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import "./Authentication.css";
 
-export default function Login({ onBack, onNavigate }) {
+export default function Login({ onBack, onNavigate, onLogin }) {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!identifier || !password) {
+      alert("Please enter both identifier and password");
+      return;
+    }
     // placeholder: perform authentication
     const storedUser = { name: identifier, avatar: null };
-    try { localStorage.setItem("user", JSON.stringify(storedUser)); } catch (e) {}
-    alert("Logged in (demo). Redirecting to dashboard...");
-    onNavigate && onNavigate("dashboard");
+    if (onLogin) {
+      onLogin(storedUser);
+    } else {
+      try { localStorage.setItem("user", JSON.stringify(storedUser)); } catch (e) {}
+      onNavigate && onNavigate("dashboard");
+    }
   };
 
   return (

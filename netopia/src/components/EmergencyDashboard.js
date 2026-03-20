@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   Phone,
   AlertTriangle,
@@ -308,11 +309,31 @@ export function EmergencyDashboard({ onNavigate }) {
     return <ReportIssue onBack={() => setSelectedEmergency(null)} />;
 
   /* ---------------- UI ---------------- */
+  
+  const containerVars = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+  const itemVars = {
+    hidden: { opacity: 0, y: 15 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 260, damping: 20 } }
+  };
 
   return (
-    <div className="emergency-dashboard">
+    <div className="emergency-dashboard premium-dash">
+      <div className="dash-bg-blob blob-1"></div>
+      <div className="dash-bg-blob blob-2"></div>
 
-      <div className="dashboard-header user-header">
+      <motion.div 
+        className="dashboard-content-wrapper"
+        variants={containerVars}
+        initial="hidden"
+        animate="show"
+      >
+        <motion.div variants={itemVars} className="dashboard-header user-header">
         <div className="header-left">
           <h1>Emergency Services</h1>
           <div className="status-badge">Online</div>
@@ -330,10 +351,10 @@ export function EmergencyDashboard({ onNavigate }) {
             <button className="logout-btn" onClick={handleLogout}>Log out</button>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* MAP */}
-      <div className="map-wrapper">
+      <motion.div variants={itemVars} className="map-wrapper glass-panel">
         <MapContainer
           center={userLocation}
           zoom={15}
@@ -402,7 +423,7 @@ export function EmergencyDashboard({ onNavigate }) {
             );
           })}
         </MapContainer>
-      </div>
+      </motion.div>
 
       {/* resource list (for debugging/visibility) */}
       {resources.length > 0 && (
@@ -433,7 +454,7 @@ export function EmergencyDashboard({ onNavigate }) {
       )}
 
       {/* SOS */}
-      <div className="emergency-call-card">
+      <motion.div variants={itemVars} className="emergency-call-card glass-panel call-card-glow">
         <button
           className={`emergency-call-button ${
             isSOSActive ? "active-sos" : ""
@@ -482,10 +503,10 @@ export function EmergencyDashboard({ onNavigate }) {
             </button>
           </>
         )}
-      </div>
+      </motion.div>
 
       {/* Emergency Types with Colors */}
-      <div className="emergency-types-grid">
+      <motion.div variants={itemVars} className="emergency-types-grid">
         {emergencyTypes.map((emergency) => {
           const Icon = emergency.icon;
           return (
@@ -503,14 +524,14 @@ export function EmergencyDashboard({ onNavigate }) {
             </div>
           );
         })}
-      </div>
-<div className="report-issue-section">
+      </motion.div>
+      <motion.div variants={itemVars} className="report-issue-section glass-panel">
         <h3>Report an Issue</h3>
         <p>Report any issues or problems you encounter in the emergency dashboard.</p>
         <button className="report-issue-button" onClick={() => setSelectedEmergency("report")}>Report Issue</button>
-        </div>
+      </motion.div>
 
-        <style jsx>{`
+      <style jsx>{`
             .full-width-page { max-width:1000px; margin:0 auto; padding:2rem 1rem; }
             .police-emergency-container { background:#fff; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:2rem; }
             .emergency-police, .emr-types, .immediate-actions, .emr-call, .emr-tools{ margin-bottom:2rem; }
@@ -522,7 +543,8 @@ export function EmergencyDashboard({ onNavigate }) {
             .report-issue-section p { margin-bottom:1rem; color:#555; }
             .report-issue-button { background-color:#dc3545; color:#fff; border:none; padding:0.75rem 1.25rem; border-radius:6px; cursor:pointer; }
             .report-issue-button:hover { background-color:#a71d2a; }
-`}</style>
-</div>
+      `}</style>
+      </motion.div>
+    </div>
   );
 }
